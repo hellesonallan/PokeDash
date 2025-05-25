@@ -46,10 +46,67 @@ PokeDash/
 
 - Dataset Pokémon Completo retirado de [Kaggle | The Complete Pokemon Dataset by Rounak Banik](https://www.kaggle.com/datasets/rounakbanik/pokemon)
 
+---
+
 ## 🚀 Como Começar
 
 Clone este repositório:
 
 ```bash
 git clone https://github.com/hellesonallan/PokeDash.git
+```
+
+---
+
+### Atualizando seu repositório local
+
+Antes de iniciar um novo desenvolvimento, atualize sua branch principal com as últimas mudanças:
+
+```bash
+git checkout main
+git pull origin main
+```
+
+---
+
+### Trabalhando com Git
+
+**1. Criar uma nova branch para desenvolver funcionalidades**
+
+```bash
+git checkout meu-nome
+```
+
+**2. Adicionar os arquivos modificados para staging:**
+
+```bash
+git add .
+```
+
+**3. Fazer commit das alterações com uma mensagem descritiva:**
+
+```bash
+git commit -m "Padrão: Descrição das alterações feitas"
+```
+
+## 📝 Padrão de Commit
+
+Para manter um histórico de commits organizado e claro, utilize os seguintes tipos de mensagens para os commits:
+
+- **chore**: alterações relacionadas à estrutura do projeto ou tarefas de manutenção.  
+  Exemplo: `chore: criei uma nova pasta chamada assets`
+
+- **feat**: adição de novas funcionalidades ou alterações no código.  
+  Exemplo: `feat: criei o header da página`
+
+- **fix**: correção de bugs ou problemas no código.  
+  Exemplo: `fix: resolvido diretório do logo não encontrado`
+
+- **docs**: alterações na documentação do projeto.  
+  Exemplo: `docs: adicionei instruções para utilização do git`
+
+**4. Enviar a branch para o repositório remoto:**
+
+```bash
+git push origin meu-nome
 ```
