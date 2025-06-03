@@ -1,4 +1,4 @@
-import { BACK4APP_CONFIG } from "../../config/config.js";
+import { BACK4APP_CONFIG } from "../config/config.js";
 
 export async function fetchPokemonList() {
   const headers = {
