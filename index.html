@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>PokeDash - Estatísticas Pokémon</title>
-
     <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -15,15 +14,13 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="src/css/styles.css" />
 
-    <!-- Chart.js via CDN (versão 4.x para compatibilidade) -->
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Plugin Treemap compatível com Chart.js 4.x -->
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@0.3.0/dist/chartjs-chart-treemap.min.js"></script>
   </head>
   <body>
-    <!-- Barra de Navegação -->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
       <div class="container">
         <a class="navbar-brand" href="#">
@@ -69,9 +66,8 @@
       </div>
     </nav>
 
-    <!-- Conteúdo Principal -->
     <main class="container py-4" id="home">
-      <!-- Cards de Estatísticas -->
+      <!-- Cards -->
       <div class="row g-4 mb-5">
         <div class="col-md-6 col-lg-3">
           <div class="stat-card card shadow-sm h-100">
@@ -93,7 +89,7 @@
                 <i class="fas fa-fire"></i>
               </div>
               <h3 class="h5">Tipo Mais Comum</h3>
-              <div class="stat-value">Normal</div>
+              <div class="stat-value">null</div>
               <p class="text-muted mb-0">0% da Pokédex</p>
             </div>
           </div>
@@ -106,12 +102,11 @@
                 <i class="fas fa-bolt"></i>
               </div>
               <h3 class="h5">Mais Rápido</h3>
-              <div class="stat-value">Bulbasaur</div>
+              <div class="stat-value">null</div>
               <p class="text-muted mb-0">0 de Velocidade</p>
             </div>
           </div>
         </div>
-
         <div class="col-md-6 col-lg-3">
           <div class="stat-card card shadow-sm h-100">
             <div class="card-body text-center">
@@ -126,7 +121,7 @@
         </div>
       </div>
 
-      <!-- Seção de Gráficos (adicionados canvas) -->
+      <!-- Gráficos -->
       <section class="chart-container" id="types">
         <h3 class="chart-title">
           <i class="fas fa-fire me-2"></i> Distribuição de Tipos Pokémon
@@ -190,9 +185,7 @@
     <!-- Bootstrap Bundle JS (Popper + Bootstrap) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Seus scripts -->
-    <script type="module" src="js/api.js"></script>
-    <script type="module" src="js/charts.js"></script>
-    <script type="module" src="js/main.js"></script>
+    <!-- Script Principal -->
+    <script type="module" src="src/js/main.js"></script>
   </body>
 </html>

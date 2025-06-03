@@ -2,18 +2,11 @@ export function renderAllCharts(pokemons) {
   renderTypesChart(pokemons);
   renderLegendaryChart(pokemons);
   renderStatsChart(pokemons);
-}
-
-// Utilitário: criar canvas dentro do container
-function createCanvas(id) {
-  const container = document.getElementById(id);
-  const canvas = document.createElement("canvas");
-  container.appendChild(canvas);
-  return canvas;
+  console.log(pokemons)
 }
 
 function renderTypesChart(pokemons) {
-  const canvas = createCanvas("types");
+  const canvas = document.getElementById("chartTypes");
 
   const typeCounts = {};
   pokemons.forEach((p) => {
@@ -64,14 +57,8 @@ function renderTypesChart(pokemons) {
     fairy: "#D685AD",
   };
 
-  const labels = Object.keys(typeCounts).map(
-    (type) => tipoTraducao[type] || type
-  );
-
-  // Pegando as cores na ordem dos tipos para o dataset
-  const backgroundColors = Object.keys(typeCounts).map(
-    (type) => tipoCores[type] || "#CCCCCC" // cinza padrão se não encontrar
-  );
+  const labels = Object.keys(typeCounts).map((type) => tipoTraducao[type] || type);
+  const backgroundColors = Object.keys(typeCounts).map((type) => tipoCores[type] || "#CCCCCC");
 
   new Chart(canvas, {
     type: "doughnut",
@@ -93,16 +80,13 @@ function renderTypesChart(pokemons) {
 }
 
 function renderLegendaryChart(pokemons) {
-  const canvas = createCanvas("legendary");
+  const canvas = document.getElementById("chartLegendary");
 
-  let legendaryCount = 0;
-  pokemons.forEach((p) => {
-    if (p.is_legendary === 1) legendaryCount++;
-  });
+  const legendaryCount = pokemons.filter((p) => p.is_legendary === 1).length;
   const commonCount = pokemons.length - legendaryCount;
 
   new Chart(canvas, {
-    type: "pie", // alterado de 'doughnut' para 'pie'
+    type: "pie",
     data: {
       labels: ["Lendários", "Comuns"],
       datasets: [
@@ -116,55 +100,76 @@ function renderLegendaryChart(pokemons) {
 }
 
 function renderStatsChart(pokemons) {
-  const canvas = createCanvas("stats");
+  const canvas = document.getElementById("chartStats");
 
-  // Calcular média stats por tipo1
   const statsByType = {};
   const countsByType = {};
 
   pokemons.forEach((p) => {
-    const type = p.type1;
-    if (!type) return;
+    const types = [p.type1, p.type2].filter(Boolean); // pega type1 e type2, ignorando null
 
-    if (!statsByType[type]) {
-      statsByType[type] = {
-        hp: 0,
-        attack: 0,
-        defense: 0,
-        sp_attack: 0,
-        sp_defense: 0,
-        speed: 0,
-      };
-      countsByType[type] = 0;
-    }
+    types.forEach((type) => {
+      if (!statsByType[type]) {
+        statsByType[type] = {
+          hp: 0,
+          attack: 0,
+          defense: 0,
+          sp_attack: 0,
+          sp_defense: 0,
+          speed: 0,
+        };
+        countsByType[type] = 0;
+      }
 
-    statsByType[type].hp += p.hp;
-    statsByType[type].attack += p.attack;
-    statsByType[type].defense += p.defense;
-    statsByType[type].sp_attack += p.sp_attack;
-    statsByType[type].sp_defense += p.sp_defense;
-    statsByType[type].speed += p.speed;
-
-    countsByType[type]++;
+      statsByType[type].hp += p.hp;
+      statsByType[type].attack += p.attack;
+      statsByType[type].defense += p.defense;
+      statsByType[type].sp_attack += p.sp_attack;
+      statsByType[type].sp_defense += p.sp_defense;
+      statsByType[type].speed += p.speed;
+      countsByType[type]++;
+    });
   });
 
-  const labels = Object.keys(statsByType).sort();
+  const tipoTraducao = {
+    normal: "Normal",
+    fire: "Fogo",
+    water: "Água",
+    grass: "Grama",
+    electric: "Elétrico",
+    ice: "Gelo",
+    fighting: "Lutador",
+    poison: "Veneno",
+    ground: "Terra",
+    flying: "Voador",
+    psychic: "Psíquico",
+    bug: "Inseto",
+    rock: "Pedra",
+    ghost: "Fantasma",
+    dragon: "Dragão",
+    dark: "Noturno",
+    steel: "Aço",
+    fairy: "Fada",
+  };
+
+  const types = Object.keys(statsByType).sort();
+  const labels = types.map((type) => tipoTraducao[type] || type);
+
   const datasets = [
-    { label: "HP", color: "rgba(255, 99, 132, 0.7)" },
-    { label: "Attack", color: "rgba(255, 159, 64, 0.7)" },
-    { label: "Defense", color: "rgba(255, 205, 86, 0.7)" },
-    { label: "Sp. Attack", color: "rgba(75, 192, 192, 0.7)" },
-    { label: "Sp. Defense", color: "rgba(54, 162, 235, 0.7)" },
-    { label: "Speed", color: "rgba(153, 102, 255, 0.7)" },
+    { label: "HP", color: "rgba(255, 99, 132, 0.7)", key: "hp" },
+    { label: "Attack", color: "rgba(255, 159, 64, 0.7)", key: "attack" },
+    { label: "Defense", color: "rgba(255, 205, 86, 0.7)", key: "defense" },
+    { label: "Sp. Attack", color: "rgba(75, 192, 192, 0.7)", key: "sp_attack" },
+    { label: "Sp. Defense", color: "rgba(54, 162, 235, 0.7)", key: "sp_defense" },
+    { label: "Speed", color: "rgba(153, 102, 255, 0.7)", key: "speed" },
   ];
 
-  const dataSetsForChart = datasets.map(({ label, color }) => ({
+  const dataSetsForChart = datasets.map(({ label, color, key }) => ({
     label,
     backgroundColor: color,
-    data: labels.map((type) =>
+    data: types.map((type) =>
       (
-        statsByType[type][label.toLowerCase().replace(/ /g, "_")] /
-        countsByType[type]
+        statsByType[type][key] / countsByType[type]
       ).toFixed(1)
     ),
   }));
@@ -178,17 +183,12 @@ function renderStatsChart(pokemons) {
     options: {
       responsive: true,
       scales: { y: { beginAtZero: true } },
-      plugins: { title: { display: true, text: "Atributos por Tipo (Média)" } },
+      plugins: {
+        title: {
+          display: true,
+          text: "Atributos por Tipo (Média)",
+        },
+      },
     },
   });
-}
-
-function generateColors(n) {
-  // Gera array de n cores pastel diferentes
-  const colors = [];
-  for (let i = 0; i < n; i++) {
-    const hue = Math.round((360 / n) * i);
-    colors.push(`hsl(${hue}, 70%, 70%)`);
-  }
-  return colors;
 }

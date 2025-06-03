@@ -12,20 +12,18 @@ A estrutura do projeto é organizada de forma modular, facilitando a manutençã
 PokeDash/
 ├── config/                  # Configurações como API Keys e variáveis globais
 │   └── config.js
-├── data/                    # (Opcional) Dados mockados ou cache local
-│   └── sample.json
 ├── public/                  # Arquivos estáticos acessíveis diretamente
 │   └── images/              # Imagens públicas (ex: logo, ícones)
 ├── src/                     # Código-fonte principal
-│   ├── assets/              # Ícones, fontes, imagens internas
 │   ├── css/                 # Estilos CSS
 │   │   └── styles.css
 │   ├── js/                  # Scripts JavaScript
-│   │   ├── api.js           # Comunicação com a API dos Pokémon
-│   │   ├── charts.js        # Lógica para renderização dos gráficos
-│   │   ├── dom.js           # Manipulação da interface e elementos HTML
-│   │   └── main.js          # Inicialização do app
-│   └── index.html           # Página principal da aplicação
+│       ├── api.js           # Comunicação com a API dos Pokémon
+│       ├── cards.js         # Lógica para renderização dos cards
+│       ├── charts.js        # Lógica para renderização dos gráficos
+│       ├── dom.js           # Manipulação da interface e elementos HTML
+│       └── main.js          # Inicialização do app
+└── index.html               # Página principal da aplicação
 └── README.md                # Documentação do projeto
 ```
 
