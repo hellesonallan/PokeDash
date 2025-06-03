@@ -13,11 +13,37 @@ export function renderStatsCards(pokemons) {
     ["", 0]
   )[0];
 
+  // Objeto para tradução dos tipos
+  const tipoTraducao = {
+    normal: "Normal",
+    fire: "Fogo",
+    water: "Água",
+    grass: "Grama",
+    electric: "Elétrico",
+    ice: "Gelo",
+    fighting: "Lutador",
+    poison: "Veneno",
+    ground: "Terra",
+    flying: "Voador",
+    psychic: "Psíquico",
+    bug: "Inseto",
+    rock: "Pedra",
+    ghost: "Fantasma",
+    dragon: "Dragão",
+    dark: "Noturno",
+    steel: "Aço",
+    fairy: "Fada",
+  };
+
   // Função para deixar a primeira letra maiúscula
   function capitalize(str) {
     if (!str) return "";
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
+
+  // Traduz o tipo mais comum, ou mantém original se não tiver tradução
+  const mostCommonTypeTranslated =
+    tipoTraducao[mostCommonType] || mostCommonType;
 
   const mostCommonTypePercent = (
     (typeCounts[mostCommonType] / total) *
@@ -35,8 +61,9 @@ export function renderStatsCards(pokemons) {
 
   statCards[0].querySelector(".stat-value").textContent =
     total.toLocaleString();
-  statCards[1].querySelector(".stat-value").textContent =
-    capitalize(mostCommonType);
+  statCards[1].querySelector(".stat-value").textContent = capitalize(
+    mostCommonTypeTranslated
+  );
   statCards[1].querySelector(
     "p.text-muted"
   ).textContent = `${mostCommonTypePercent}% da Pokédex`;

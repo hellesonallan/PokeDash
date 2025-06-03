@@ -2,34 +2,32 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>PokeDash - Estatísticas Pokémon</title>
+
     <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@0.2.3"></script>
     <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <link rel="stylesheet" href="css/styles.css" />
+
+    <!-- Chart.js via CDN (versão 4.x para compatibilidade) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Plugin Treemap compatível com Chart.js 4.x -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@0.3.0/dist/chartjs-chart-treemap.min.js"></script>
   </head>
   <body>
     <!-- Barra de Navegação -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
       <div class="container">
         <a class="navbar-brand" href="#">
-          <img
-            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"
-            alt="Pikachu"
-            width="40"
-          />
-          PokeDash
+          <img src="../public/images/logo.png" alt="Logo" />
         </a>
         <button
           class="navbar-toggler"
@@ -52,13 +50,13 @@
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#stats"
-                ><i class="fas fa-chart-bar me-1"></i> Atributos</a
+              <a class="nav-link" href="#legendary"
+                ><i class="fas fa-crown me-2"></i> Lendarios</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#compare"
-                ><i class="fas fa-exchange-alt me-1"></i> Comparar</a
+              <a class="nav-link" href="#stats"
+                ><i class="fas fa-chart-bar me-1"></i> Atributos</a
               >
             </li>
             <li class="nav-item">
@@ -73,25 +71,6 @@
 
     <!-- Conteúdo Principal -->
     <main class="container py-4" id="home">
-      <!-- Título e Busca -->
-      <section class="text-center mb-5">
-        <h1 class="display-5 fw-bold mb-3">Estatísticas Pokémon</h1>
-        <p class="lead text-muted">
-          Explore dados visuais da Pokédex de todas as gerações
-        </p>
-
-        <div class="search-box input-group mb-3">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Busque por Pokémon, tipo ou geração..."
-          />
-          <button class="btn btn-pokered" type="button">
-            <i class="fas fa-search"></i> Buscar
-          </button>
-        </div>
-      </section>
-
       <!-- Cards de Estatísticas -->
       <div class="row g-4 mb-5">
         <div class="col-md-6 col-lg-3">
@@ -101,8 +80,8 @@
                 <i class="fas fa-chart-pie"></i>
               </div>
               <h3 class="h5">Total de Pokémon</h3>
-              <div class="stat-value">1,025</div>
-              <p class="text-muted mb-0">Até a 9ª Geração</p>
+              <div class="stat-value">0</div>
+              <p class="text-muted mb-0">Somente 1ª Geração</p>
             </div>
           </div>
         </div>
@@ -114,8 +93,8 @@
                 <i class="fas fa-fire"></i>
               </div>
               <h3 class="h5">Tipo Mais Comum</h3>
-              <div class="stat-value">Água</div>
-              <p class="text-muted mb-0">18% da Pokédex</p>
+              <div class="stat-value">Normal</div>
+              <p class="text-muted mb-0">0% da Pokédex</p>
             </div>
           </div>
         </div>
@@ -128,7 +107,7 @@
               </div>
               <h3 class="h5">Mais Rápido</h3>
               <div class="stat-value">Bulbasaur</div>
-              <p class="text-muted mb-0">0 de Velocidade</p>
+              <p class="text-muted mb-0">200 de Velocidade</p>
             </div>
           </div>
         </div>
@@ -140,75 +119,33 @@
                 <i class="fas fa-crown"></i>
               </div>
               <h3 class="h5">Lendários</h3>
-              <div class="stat-value">58</div>
-              <p class="text-muted mb-0">5.7% do total</p>
+              <div class="stat-value">0</div>
+              <p class="text-muted mb-0">0% do total</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Seção de Gráficos -->
+      <!-- Seção de Gráficos (adicionados canvas) -->
       <section class="chart-container" id="types">
         <h3 class="chart-title">
           <i class="fas fa-fire me-2"></i> Distribuição de Tipos Pokémon
         </h3>
-      </section>
-
-      <section class="chart-container" id="generation">
-        <h3 class="chart-title">
-          <i class="fas fa-layer-group me-2"></i> Pokémon por Geração
-        </h3>
+        <canvas id="chartTypes" width="400" height="250"></canvas>
       </section>
 
       <section class="chart-container" id="legendary">
         <h3 class="chart-title">
           <i class="fas fa-crown me-2"></i> Pokémon Lendários vs. Comuns
         </h3>
+        <canvas id="chartLegendary" width="400" height="250"></canvas>
       </section>
 
       <section class="chart-container" id="stats">
         <h3 class="chart-title">
           <i class="fas fa-chart-bar me-2"></i> Atributos por Tipo (Média)
         </h3>
-      </section>
-
-      <section class="chart-container" id="height">
-        <h3 class="chart-title">
-          <i class="fas fa-ruler-vertical me-2"></i> Distribuição de Altura
-        </h3>
-      </section>
-
-      <section class="chart-container" id="weight">
-        <h3 class="chart-title">
-          <i class="fas fa-weight-hanging me-2"></i> Distribuição de Peso
-        </h3>
-      </section>
-
-      <section class="chart-container" id="gender">
-        <h3 class="chart-title">
-          <i class="fas fa-venus-mars me-2"></i> Proporção de Gênero Pokémon
-        </h3>
-      </section>
-
-      <section class="chart-container" id="eggsteps">
-        <h3 class="chart-title">
-          <i class="fas fa-shoe-prints me-2"></i> Passos para Chocar Ovo (por
-          Tipo)
-        </h3>
-      </section>
-
-      <section class="chart-container" id="efficiency">
-        <h3 class="chart-title">
-          <i class="fas fa-bug me-2"></i> Efetividade Contra Outros Tipos
-          (Média)
-        </h3>
-      </section>
-
-      <section class="chart-container" id="comparison">
-        <h3 class="chart-title">
-          <i class="fas fa-exchange-alt me-2"></i> Comparação de Atributos Entre
-          Pokémon
-        </h3>
+        <canvas id="chartStats" width="400" height="250"></canvas>
       </section>
     </main>
 
@@ -226,31 +163,36 @@
           <div class="col-lg-4 mb-4 mb-lg-0">
             <h4 class="mb-3">Links</h4>
             <div class="d-flex flex-column">
-              <a href="#" class="footer-link mb-2"
-                ><i class="fas fa-external-link-alt me-2"></i> PokeAPI</a
+              <a
+                href="https://www.back4app.com/"
+                target="_blank"
+                class="footer-link mb-2"
+                ><i class="fas fa-cloud me-2"></i> Back4App</a
               >
-              <a href="#" class="footer-link mb-2"
+              <a
+                href="https://github.com/hellesonallan/PokeDash"
+                target="_blank"
+                class="footer-link mb-2"
                 ><i class="fab fa-github me-2"></i> GitHub</a
               >
-              <a href="#" class="footer-link mb-2"
+              <a
+                href="https://github.com/hellesonallan/PokeDash?tab=readme-ov-file#-pokedash---dashboard-de-estat%C3%ADsticas-dos-pok%C3%A9mon-1%C2%AA-gera%C3%A7%C3%A3o"
+                target="_blank"
+                class="footer-link mb-2"
                 ><i class="fas fa-book me-2"></i> Documentação</a
               >
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <h4 class="mb-3">Legal</h4>
-            <div class="d-flex flex-column">
-              <a href="#" class="footer-link mb-2">Termos de Uso</a>
-              <a href="#" class="footer-link mb-2">Política de Privacidade</a>
             </div>
           </div>
         </div>
       </div>
     </footer>
 
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap Bundle JS (Popper + Bootstrap) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Seus scripts -->
+    <script type="module" src="js/api.js"></script>
+    <script type="module" src="js/charts.js"></script>
     <script type="module" src="js/main.js"></script>
   </body>
 </html>
