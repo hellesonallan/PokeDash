@@ -1,5 +1,5 @@
-import { renderAllCharts } from "./charts.js";
 import { fetchPokemonList } from "./api.js";
+import { renderAllCharts } from "./charts.js";
 import { renderStatsCards } from "./cards.js";
 
 fetchPokemonList()

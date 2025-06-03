@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PokeDash - Buscar Pokémon</title>
+    <link rel="icon" type="image/x-icon" href="public/favicon.ico" />
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+      <div class="container d-flex align-items-center justify-content-between">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          <img src="public/images/logo.png" alt="Logo" />
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" href="index.html#home"
+                ><i class="fas fa-home me-1"></i> Início</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.html#types"
+                ><i class="fas fa-fire me-1"></i> Tipos</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.html#legendary"
+                ><i class="fas fa-crown me-2"></i> Lendarios</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.html#stats"
+                ><i class="fas fa-chart-bar me-1"></i> Atributos</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#"
+                ><i class="fas fa-database me-1"></i> Dados</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.html#about"
+                ><i class="fas fa-info-circle me-1"></i> Sobre</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container py-5">
+      <h2 class="mb-4 text-center">Dados Pokémon</h2>
+
+      <!-- Botão Adicionar Pokémon -->
+      <div class="text-center mb-5">
+        <a href="add.html" class="btn btn-primary btn-lg">
+          <i class="fas fa-plus-circle me-2"></i> Adicionar Pokémon
+        </a>
+      </div>
+
+      <div id="results" class="row justify-content-center"></div>
+
+      <div id="noResults" class="text-center text-muted" style="display: none">
+        <p>Nenhum Pokémon encontrado.</p>
+      </div>
+    </main>
+
+    <!-- Bootstrap Bundle JS (Popper + Bootstrap) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script type="module">
+      import { BACK4APP_CONFIG } from "./config/config.js";
+
+      const resultsContainer = document.getElementById("results");
+      const noResultsMsg = document.getElementById("noResults");
+
+      async function fetchAllPokemons() {
+        resultsContainer.innerHTML = "";
+        noResultsMsg.style.display = "none";
+
+        try {
+          const url = `${BACK4APP_CONFIG.BASE_URL}?limit=100&order=pokedex_number`;
+          const headers = {
+            "X-Parse-Application-Id": BACK4APP_CONFIG.APP_ID,
+            "X-Parse-REST-API-Key": BACK4APP_CONFIG.API_KEY,
+            "Content-Type": "application/json",
+          };
+
+          const response = await fetch(url, { headers });
+
+          if (!response.ok)
+            throw new Error(
+              "Erro ao buscar na API. Status: " + response.status
+            );
+
+          const data = await response.json();
+          const pokemons = data.results || [];
+
+          if (pokemons.length === 0) {
+            noResultsMsg.style.display = "block";
+            return;
+          }
+
+          pokemons.forEach((poke) => {
+            const card = document.createElement("div");
+            card.className = "card shadow-sm mb-3";
+            card.style.maxWidth = "540px";
+
+            card.innerHTML = `
+              <div class="row g-0 align-items-center">
+                <div class="col-md-4 text-center p-3">
+                  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+                    poke.pokedex_number || poke.id || poke.objectId
+                  }.png" class="img-fluid" alt="${poke.name}" />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title text-capitalize d-flex justify-content-between">
+                      ${poke.name}
+                      <button class="btn btn-sm btn-danger" data-id="${
+                        poke.objectId
+                      }" title="Remover">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </h5>
+                    <p class="card-text mb-1"><strong>Tipo 1:</strong> ${
+                      poke.type1 || "Desconhecido"
+                    }</p>
+                    <p class="card-text mb-1"><strong>Tipo 2:</strong> ${
+                      poke.type2 || "Nenhum"
+                    }</p>
+                    <p class="card-text mb-1"><strong>Ataque:</strong> ${
+                      poke.attack || "-"
+                    }</p>
+                    <p class="card-text mb-1"><strong>Defesa:</strong> ${
+                      poke.defense || "-"
+                    }</p>
+                    <p class="card-text mb-1"><strong>HP:</strong> ${
+                      poke.hp || "-"
+                    }</p>
+                    <p class="card-text mb-1"><strong>Velocidade:</strong> ${
+                      poke.speed || "-"
+                    }</p>
+                    <p class="card-text mb-0"><small class="text-muted">ID: ${
+                      poke.objectId
+                    }</small></p>
+                  </div>
+                </div>
+              </div>
+            `;
+
+            resultsContainer.appendChild(card);
+          });
+        } catch (error) {
+          alert("Erro ao carregar Pokémons: " + error.message);
+          console.error(error);
+        }
+      }
+
+      async function deletePokemon(objectId) {
+        if (!confirm("Tem certeza que deseja remover este Pokémon?")) return;
+
+        const url = `https://parseapi.back4app.com/classes/Pokemon/${objectId}`;
+        const headers = {
+          "X-Parse-Application-Id": BACK4APP_CONFIG.APP_ID,
+          "X-Parse-REST-API-Key": BACK4APP_CONFIG.API_KEY,
+        };
+
+        try {
+          const response = await fetch(url, {
+            method: "DELETE",
+            headers,
+          });
+
+          if (!response.ok) throw new Error("Erro ao excluir Pokémon.");
+
+          alert("Pokémon removido com sucesso.");
+          fetchAllPokemons();
+        } catch (error) {
+          alert("Erro ao remover: " + error.message);
+          console.error(error);
+        }
+      }
+
+      resultsContainer.addEventListener("click", (event) => {
+        if (
+          event.target.matches("button.btn-danger") ||
+          event.target.closest("button.btn-danger")
+        ) {
+          const button = event.target.closest("button.btn-danger");
+          const objectId = button.getAttribute("data-id");
+          deletePokemon(objectId);
+        }
+      });
+
+      fetchAllPokemons();
+    </script>
+  </body>
+</html>
