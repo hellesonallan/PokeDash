@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PokeDash - Estatísticas Pokémon</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@0.2.3"></script>
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <!-- Barra de Navegação -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img
+            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"
+            alt="Pikachu"
+          />
+          PokeDash
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="#home"
+                ><i class="fas fa-home me-1"></i> Início</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#types"
+                ><i class="fas fa-fire me-1"></i> Tipos</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#stats"
+                ><i class="fas fa-chart-bar me-1"></i> Atributos</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#compare"
+                ><i class="fas fa-exchange-alt me-1"></i> Comparar</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about"
+                ><i class="fas fa-info-circle me-1"></i> Sobre</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <main class="container py-4" id="home">
+      <!-- Título e Busca -->
+      <section class="text-center mb-5">
+        <h1 class="display-5 fw-bold mb-3">Estatísticas Pokémon</h1>
+        <p class="lead text-muted">
+          Explore dados visuais da Pokédex de todas as gerações
+        </p>
+
+        <div class="search-box input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Busque por Pokémon, tipo ou geração..."
+          />
+          <button class="btn btn-pokered" type="button">
+            <i class="fas fa-search"></i> Buscar
+          </button>
+        </div>
+      </section>
+
+      <!-- Cards de Estatísticas -->
+      <div class="row g-4 mb-5">
+        <div class="col-md-6 col-lg-3">
+          <div class="stat-card card shadow-sm h-100">
+            <div class="card-body text-center">
+              <div class="stat-icon">
+                <i class="fas fa-chart-pie"></i>
+              </div>
+              <h3 class="h5">Total de Pokémon</h3>
+              <div class="stat-value">1,025</div>
+              <p class="text-muted mb-0">Até a 9ª Geração</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="stat-card card shadow-sm h-100">
+            <div class="card-body text-center">
+              <div class="stat-icon">
+                <i class="fas fa-fire"></i>
+              </div>
+              <h3 class="h5">Tipo Mais Comum</h3>
+              <div class="stat-value">Água</div>
+              <p class="text-muted mb-0">18% da Pokédex</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="stat-card card shadow-sm h-100">
+            <div class="card-body text-center">
+              <div class="stat-icon">
+                <i class="fas fa-bolt"></i>
+              </div>
+              <h3 class="h5">Mais Rápido</h3>
+              <div class="stat-value">Regieleki</div>
+              <p class="text-muted mb-0">200 de Velocidade</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="stat-card card shadow-sm h-100">
+            <div class="card-body text-center">
+              <div class="stat-icon">
+                <i class="fas fa-crown"></i>
+              </div>
+              <h3 class="h5">Lendários</h3>
+              <div class="stat-value">58</div>
+              <p class="text-muted mb-0">5.7% do total</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção de Gráficos -->
+      <section class="chart-container" id="types">
+        <h3 class="chart-title">
+          <i class="fas fa-fire me-2"></i> Distribuição de Tipos Pokémon
+        </h3>
+      </section>
+
+      <section class="chart-container" id="generation">
+        <h3 class="chart-title">
+          <i class="fas fa-layer-group me-2"></i> Pokémon por Geração
+        </h3>
+      </section>
+
+      <section class="chart-container" id="legendary">
+        <h3 class="chart-title">
+          <i class="fas fa-crown me-2"></i> Pokémon Lendários vs. Comuns
+        </h3>
+      </section>
+
+      <section class="chart-container" id="stats">
+        <h3 class="chart-title">
+          <i class="fas fa-chart-bar me-2"></i> Atributos por Tipo (Média)
+        </h3>
+      </section>
+
+      <section class="chart-container" id="height">
+        <h3 class="chart-title">
+          <i class="fas fa-ruler-vertical me-2"></i> Distribuição de Altura
+        </h3>
+      </section>
+
+      <section class="chart-container" id="weight">
+        <h3 class="chart-title">
+          <i class="fas fa-weight-hanging me-2"></i> Distribuição de Peso
+        </h3>
+      </section>
+
+      <section class="chart-container" id="gender">
+        <h3 class="chart-title">
+          <i class="fas fa-venus-mars me-2"></i> Proporção de Gênero Pokémon
+        </h3>
+      </section>
+
+      <section class="chart-container" id="eggsteps">
+        <h3 class="chart-title">
+          <i class="fas fa-shoe-prints me-2"></i> Passos para Chocar Ovo (por
+          Tipo)
+        </h3>
+      </section>
+
+      <section class="chart-container" id="efficiency">
+        <h3 class="chart-title">
+          <i class="fas fa-bug me-2"></i> Efetividade Contra Outros Tipos
+          (Média)
+        </h3>
+      </section>
+
+      <section class="chart-container" id="comparison">
+        <h3 class="chart-title">
+          <i class="fas fa-exchange-alt me-2"></i> Comparação de Atributos Entre
+          Pokémon
+        </h3>
+      </section>
+    </main>
+
+    <!-- Rodapé -->
+    <footer id="about">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 mb-4 mb-lg-0">
+            <h4 class="mb-3">PokeDash</h4>
+            <p>
+              Dashboard interativo de estatísticas Pokémon criado para fãs e
+              treinadores.
+            </p>
+          </div>
+          <div class="col-lg-4 mb-4 mb-lg-0">
+            <h4 class="mb-3">Links</h4>
+            <div class="d-flex flex-column">
+              <a href="#" class="footer-link mb-2"
+                ><i class="fas fa-external-link-alt me-2"></i> PokeAPI</a
+              >
+              <a href="#" class="footer-link mb-2"
+                ><i class="fab fa-github me-2"></i> GitHub</a
+              >
+              <a href="#" class="footer-link mb-2"
+                ><i class="fas fa-book me-2"></i> Documentação</a
+              >
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <h4 class="mb-3">Legal</h4>
+            <div class="d-flex flex-column">
+              <a href="#" class="footer-link mb-2">Termos de Uso</a>
+              <a href="#" class="footer-link mb-2">Política de Privacidade</a>
+              <p class="mb-0 small">
+                © 2023 PokeDash. Não afiliado à Nintendo ou The Pokémon Company.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
