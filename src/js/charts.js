@@ -156,12 +156,12 @@ function renderStatsChart(pokemons) {
   const labels = types.map((type) => tipoTraducao[type] || type);
 
   const datasets = [
-    { label: "HP", color: "rgba(255, 99, 132, 0.7)", key: "hp" },
-    { label: "Attack", color: "rgba(255, 159, 64, 0.7)", key: "attack" },
-    { label: "Defense", color: "rgba(255, 205, 86, 0.7)", key: "defense" },
-    { label: "Sp. Attack", color: "rgba(75, 192, 192, 0.7)", key: "sp_attack" },
-    { label: "Sp. Defense", color: "rgba(54, 162, 235, 0.7)", key: "sp_defense" },
-    { label: "Speed", color: "rgba(153, 102, 255, 0.7)", key: "speed" },
+    { label: "Vida", color: "rgba(255, 99, 132, 0.7)", key: "hp" },
+    { label: "Ataque", color: "rgba(255, 159, 64, 0.7)", key: "attack" },
+    { label: "Defesa", color: "rgba(255, 205, 86, 0.7)", key: "defense" },
+    { label: "Ataque Especial", color: "rgba(75, 192, 192, 0.7)", key: "sp_attack" },
+    { label: "Defesa Especial", color: "rgba(54, 162, 235, 0.7)", key: "sp_defense" },
+    { label: "Velocidade", color: "rgba(153, 102, 255, 0.7)", key: "speed" },
   ];
 
   const dataSetsForChart = datasets.map(({ label, color, key }) => ({
