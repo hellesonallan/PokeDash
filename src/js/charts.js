@@ -22,14 +22,65 @@ function renderTypesChart(pokemons) {
     });
   });
 
+  const tipoTraducao = {
+    normal: "Normal",
+    fire: "Fogo",
+    water: "Água",
+    grass: "Grama",
+    electric: "Elétrico",
+    ice: "Gelo",
+    fighting: "Lutador",
+    poison: "Veneno",
+    ground: "Terra",
+    flying: "Voador",
+    psychic: "Psíquico",
+    bug: "Inseto",
+    rock: "Pedra",
+    ghost: "Fantasma",
+    dragon: "Dragão",
+    dark: "Noturno",
+    steel: "Aço",
+    fairy: "Fada",
+  };
+
+  const tipoCores = {
+    normal: "#A8A77A",
+    fire: "#EE8130",
+    water: "#6390F0",
+    electric: "#F7D02C",
+    grass: "#7AC74C",
+    ice: "#96D9D6",
+    fighting: "#C22E28",
+    poison: "#A33EA1",
+    ground: "#E2BF65",
+    flying: "#A98FF3",
+    psychic: "#F95587",
+    bug: "#A6B91A",
+    rock: "#B6A136",
+    ghost: "#735797",
+    dragon: "#6F35FC",
+    dark: "#705746",
+    steel: "#B7B7CE",
+    fairy: "#D685AD",
+  };
+
+  const labels = Object.keys(typeCounts).map(
+    (type) => tipoTraducao[type] || type
+  );
+
+  // Pegando as cores na ordem dos tipos para o dataset
+  const backgroundColors = Object.keys(typeCounts).map(
+    (type) => tipoCores[type] || "#CCCCCC" // cinza padrão se não encontrar
+  );
+
   new Chart(canvas, {
-    type: "doughnut", // alterado de 'pie' para 'doughnut'
+    type: "doughnut",
     data: {
-      labels: Object.keys(typeCounts),
+      labels,
       datasets: [
         {
           data: Object.values(typeCounts),
-          backgroundColor: generateColors(Object.keys(typeCounts).length),
+          backgroundColor: backgroundColors,
         },
       ],
     },
