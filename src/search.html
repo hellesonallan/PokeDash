@@ -77,6 +77,22 @@
     <main class="container py-5">
       <h2 class="mb-4 text-center">Dados Pokémon</h2>
 
+      <div class="row justify-content-center mb-4">
+        <div class="col-md-6">
+          <div class="input-group">
+            <input
+              type="text"
+              id="searchInput"
+              class="form-control"
+              placeholder="Buscar por nome..."
+            />
+            <button id="searchBtn" class="btn btn-danger">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Botão Adicionar Pokémon -->
       <div class="text-center mb-5">
         <a href="add.html" class="btn btn-primary btn-lg">
@@ -99,13 +115,15 @@
 
       const resultsContainer = document.getElementById("results");
       const noResultsMsg = document.getElementById("noResults");
+      const searchInput = document.getElementById("searchInput");
+      const searchBtn = document.getElementById("searchBtn");
 
-      async function fetchAllPokemons() {
+      async function fetchAllPokemons(searchTerm = "") {
         resultsContainer.innerHTML = "";
         noResultsMsg.style.display = "none";
 
         try {
-          const url = `${BACK4APP_CONFIG.BASE_URL}?limit=100&order=pokedex_number`;
+          const url = `${BACK4APP_CONFIG.BASE_URL}?limit=1000&order=pokedex_number`;
           const headers = {
             "X-Parse-Application-Id": BACK4APP_CONFIG.APP_ID,
             "X-Parse-REST-API-Key": BACK4APP_CONFIG.API_KEY,
@@ -120,7 +138,15 @@
             );
 
           const data = await response.json();
-          const pokemons = data.results || [];
+          let pokemons = data.results || [];
+
+          // Filtro por nome
+          if (searchTerm.trim() !== "") {
+            const term = searchTerm.trim().toLowerCase();
+            pokemons = pokemons.filter((poke) =>
+              poke.name.toLowerCase().includes(term)
+            );
+          }
 
           if (pokemons.length === 0) {
             noResultsMsg.style.display = "block";
@@ -133,47 +159,47 @@
             card.style.maxWidth = "540px";
 
             card.innerHTML = `
-              <div class="row g-0 align-items-center">
-                <div class="col-md-4 text-center p-3">
-                  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-                    poke.pokedex_number || poke.id || poke.objectId
-                  }.png" class="img-fluid" alt="${poke.name}" />
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title text-capitalize d-flex justify-content-between">
-                      ${poke.name}
-                      <button class="btn btn-sm btn-danger" data-id="${
-                        poke.objectId
-                      }" title="Remover">
-                        <i class="fas fa-trash-alt"></i>
-                      </button>
-                    </h5>
-                    <p class="card-text mb-1"><strong>Tipo 1:</strong> ${
-                      poke.type1 || "Desconhecido"
-                    }</p>
-                    <p class="card-text mb-1"><strong>Tipo 2:</strong> ${
-                      poke.type2 || "Nenhum"
-                    }</p>
-                    <p class="card-text mb-1"><strong>Ataque:</strong> ${
-                      poke.attack || "-"
-                    }</p>
-                    <p class="card-text mb-1"><strong>Defesa:</strong> ${
-                      poke.defense || "-"
-                    }</p>
-                    <p class="card-text mb-1"><strong>HP:</strong> ${
-                      poke.hp || "-"
-                    }</p>
-                    <p class="card-text mb-1"><strong>Velocidade:</strong> ${
-                      poke.speed || "-"
-                    }</p>
-                    <p class="card-text mb-0"><small class="text-muted">ID: ${
-                      poke.objectId
-                    }</small></p>
-                  </div>
-                </div>
+          <div class="row g-0 align-items-center">
+            <div class="col-md-4 text-center p-3">
+              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+                poke.pokedex_number || poke.id || poke.objectId
+              }.png" class="img-fluid" alt="${poke.name}" />
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title text-capitalize d-flex justify-content-between align-items-center">
+                  <span>#${poke.pokedex_number || "?"} - ${poke.name}</span>
+                  <button class="btn btn-sm btn-danger" data-id="${
+                    poke.objectId
+                  }" title="Remover">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </h5>
+                <p class="card-text mb-1"><strong>Tipo 1:</strong> ${
+                  poke.type1 || "Desconhecido"
+                }</p>
+                <p class="card-text mb-1"><strong>Tipo 2:</strong> ${
+                  poke.type2 || "Nenhum"
+                }</p>
+                <p class="card-text mb-1"><strong>Ataque:</strong> ${
+                  poke.attack || "-"
+                }</p>
+                <p class="card-text mb-1"><strong>Defesa:</strong> ${
+                  poke.defense || "-"
+                }</p>
+                <p class="card-text mb-1"><strong>HP:</strong> ${
+                  poke.hp || "-"
+                }</p>
+                <p class="card-text mb-1"><strong>Velocidade:</strong> ${
+                  poke.speed || "-"
+                }</p>
+                <p class="card-text mb-0"><small class="text-muted">ID: ${
+                  poke.objectId
+                }</small></p>
               </div>
-            `;
+            </div>
+          </div>
+        `;
 
             resultsContainer.appendChild(card);
           });
@@ -201,7 +227,7 @@
           if (!response.ok) throw new Error("Erro ao excluir Pokémon.");
 
           alert("Pokémon removido com sucesso.");
-          fetchAllPokemons();
+          fetchAllPokemons(searchInput.value); // Atualiza com filtro atual
         } catch (error) {
           alert("Erro ao remover: " + error.message);
           console.error(error);
@@ -219,7 +245,19 @@
         }
       });
 
-      fetchAllPokemons();
+      searchBtn.addEventListener("click", () => {
+        const term = searchInput.value;
+        fetchAllPokemons(term);
+      });
+
+      searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          fetchAllPokemons(searchInput.value);
+        }
+      });
+
+      fetchAllPokemons(); // Carrega todos ao iniciar
     </script>
   </body>
 </html>
