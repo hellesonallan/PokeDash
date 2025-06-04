@@ -2,7 +2,6 @@
 
 Este projeto é um **website de dashboard** que apresenta as principais estatísticas dos Pokémon da 1ª geração. Os dados são obtidos através de uma API do Back4App (com autenticação via API Key) e apresentados com gráficos interativos e visualizações.
 
-
 [![Assista ao vídeo do funcionamento da aplicação](https://img.youtube.com/vi/eRkjBrqRBKs/0.jpg)](https://www.youtube.com/watch?v=eRkjBrqRBKs)
 
 ---
@@ -40,6 +39,7 @@ PokeDash/
 - **Bootstrap**
 - **API RESTful**
 - **Back4App**
+- **PokéAPI**
 
 ---
 
